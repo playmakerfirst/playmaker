@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المحلل | Al-Muhallil</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
+body{background:#0a0e1a;color:#fff;min-height:100vh;padding-bottom:40px}
+header{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.95);backdrop-filter:blur(15px);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 16px}
+.logo-wrap{display:flex;align-items:center;gap:10px;background:none;border:none;color:inherit;cursor:pointer}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.logo-text h1{font-size:16px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-text p{font-size:10px;color:#94a3b8}
+.container{max-width:900px;margin:0 auto;padding:20px 16px}
+.hero{text-align:center;margin-bottom:20px}
+.hero h2{font-size:24px;font-weight:900;margin-bottom:6px}
+.hero p{color:#94a3b8;font-size:13px}
+.categories{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:16px}
+.categories::-webkit-scrollbar{display:none}
+.cat-btn{padding:8px 16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;font-weight:700;font-size:12px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.cat-btn.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.leagues-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:600px){.leagues-grid{grid-template-columns:repeat(3,1fr)}}
+.league-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;text-align:right;cursor:pointer;color:inherit;font-family:inherit}
+.league-card:active{transform:scale(.97);background:rgba(59,130,246,.15)}
+.league-card .name{font-size:14px;font-weight:900;margin-bottom:4px}
+.league-card .name-en{font-size:10px;color:#94a3b8}
+.back-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px}
+.league-header{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:16px}
+.league-header h3{font-size:18px;font-weight:900}
+.league-header p{font-size:12px;color:#94a3b8}
+.search-box{position:relative;margin-bottom:12px}
+.search-box input{width:100%;padding:12px 40px 12px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font-size:13px;font-family:inherit;outline:none}
+.search-box input:focus{border-color:#3b82f6}
+.search-box input::placeholder{color:#64748b}
+.search-box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-size:14px}
+.search-box .clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#94a3b8;font-size:14px;cursor:pointer;display:none}
+.search-box.has-text .clear-btn{display:flex;align-items:center;justify-content:center}
+.stats-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.sum-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 4px;text-align:center}
+.sum-box .num{font-size:16px;font-weight:900}
+.sum-box .lbl{font-size:9px;color:#94a3b8;margin-top:2px}
+.sum-box.live .num{color:#ef4444}
+.sum-box.done .num{color:#64748b}
+.sum-box.soon .num{color:#10b981}
+.sum-box.total .num{color:#60a5fa}
+.date-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:12px}
+.date-filter::-webkit-scrollbar{display:none}
+.date-btn{padding:6px 12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#cbd5e1;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.date-btn.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.date-btn.has-items{border-color:rgba(59,130,246,.5)}
+.matches-title{font-size:12px;color:#94a3b8;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.matches-title .count-badge{background:rgba(59,130,246,.2);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#60a5fa}
+.section-header{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#94a3b8;margin:18px 0 8px;padding-right:4px}
+.section-header .dot{width:8px;height:8px;border-radius:50%}
+.section-header .dot.live{background:#ef4444;animation:pulse 1.5s infinite}
+.section-header .dot.today{background:#f59e0b}
+.section-header .dot.upcoming{background:#10b981}
+.section-header .dot.past{background:#64748b}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+.match-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;margin-bottom:8px;width:100%;text-align:right;cursor:pointer;color:inherit;font-family:inherit;position:relative;overflow:hidden}
+.match-card:active{transform:scale(.98);background:rgba(59,130,246,.15)}
+.match-card.live{border-color:rgba(239,68,68,.5);background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(255,255,255,.05))}
+.match-card.live::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:#ef4444}
+.match-card.today{border-color:rgba(245,158,11,.3)}
+.match-card.today::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:#f59e0b}
+.match-card.played{opacity:.85}
+.match-date{display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-bottom:10px;align-items:center}
+.match-date .left-side{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.match-teams{display:flex;align-items:center;gap:8px}
+.team-row{flex:1;display:flex;align-items:center;gap:6px;overflow:hidden}
+.team-row.left{flex-direction:row-reverse}
+.team-badge{width:24px;height:24px;object-fit:contain;flex-shrink:0}
+.team-name{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.match-score{padding:2px 10px;background:rgba(59,130,246,.25);border-radius:6px;font-size:13px;font-weight:900;color:#60a5fa;white-space:nowrap}
+.match-score.win-home{background:rgba(59,130,246,.35);color:#93c5fd}
+.match-score.win-away{background:rgba(168,85,247,.35);color:#c4b5fd}
+.match-score.draw-game{background:rgba(251,191,36,.25);color:#fcd34d}
+.match-vs{padding:2px 10px;background:rgba(255,255,255,.06);border-radius:6px;font-size:11px;color:#94a3b8;white-space:nowrap}
+.badge{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:800;white-space:nowrap}
+.badge.live{background:#ef4444;color:#fff;animation:pulse 1.5s infinite}
+.badge.today{background:#f59e0b;color:#fff}
+.badge.tomorrow{background:#10b981;color:#fff}
+.badge.yesterday{background:#8b5cf6;color:#fff}
+.badge.done{background:rgba(100,116,139,.4);color:#cbd5e1}
+.pred-header{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px;text-align:center;margin-bottom:16px}
+.pred-league{font-size:11px;color:#60a5fa;font-weight:700;margin-bottom:12px}
+.pred-teams{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.pred-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pred-team img{width:50px;height:50px;object-fit:contain}
+.pred-team .name{font-size:14px;font-weight:900;text-align:center}
+.pred-vs{font-size:16px;font-weight:900;color:#64748b}
+.pred-date{font-size:11px;color:#94a3b8}
+.pred-result-box{display:inline-block;padding:8px 20px;background:rgba(59,130,246,.2);border-radius:10px;font-weight:900;margin-top:10px;color:#60a5fa}
+.pred-title{text-align:center;margin-bottom:16px}
+.pred-title .label{font-size:11px;color:#94a3b8;margin-bottom:4px}
+.pred-title .value{font-size:22px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bars-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.bar-item{margin-bottom:16px}
+.bar-item:last-child{margin-bottom:0}
+.bar-header{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;gap:8px}
+.bar-header .label{display:flex;align-items:center;gap:6px;font-weight:700;overflow:hidden}
+.bar-header .label img{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+.bar-header .label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-header .value{font-weight:900;flex-shrink:0}
+.bar-header .blue{color:#60a5fa}
+.bar-header .yellow{color:#fbbf24}
+.bar-header .purple{color:#a78bfa}
+.bar-track{height:8px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:10px;transition:width 1s ease-out}
+.bar-fill.blue{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.bar-fill.yellow{background:linear-gradient(90deg,#eab308,#fbbf24)}
+.bar-fill.purple{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.confidence-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.confidence-box .label{font-size:13px;color:#cbd5e1}
+.confidence-box .value{font-size:20px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.stat-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;text-align:center}
+.stat-box .label{font-size:10px;color:#94a3b8;margin-bottom:4px}
+.stat-box .value{font-size:22px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.score-box{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.1));border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:18px;margin-bottom:14px}
+.score-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:14px}
+.score-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.score-opt{background:rgba(255,255,255,.05);border-radius:12px;padding:12px 6px;text-align:center;position:relative}
+.score-opt.top1{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(168,85,247,.25));border:1px solid #60a5fa}
+.score-opt .score-val{font-size:22px;font-weight:900;color:#fff;letter-spacing:1px}
+.score-opt .score-pct{font-size:11px;color:#60a5fa;margin-top:4px;font-weight:700}
+.score-opt .score-rank{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#3b82f6;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.firstgoal-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.firstgoal-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:12px}
+.firstgoal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-opt{background:rgba(255,255,255,.05);border-radius:12px;padding:14px;text-align:center}
+.fg-opt .fg-time{font-size:11px;color:#94a3b8;margin-bottom:6px}
+.fg-opt .fg-pct{font-size:22px;font-weight:900;color:#fff}
+.fg-opt.early{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.05));border:1px solid rgba(16,185,129,.3)}
+.fg-opt.early .fg-pct{color:#10b981}
+.fg-opt.late{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.3)}
+.fg-opt.late .fg-pct{color:#f59e0b}
+.halves-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.halves-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:14px}
+.half-row{margin-bottom:16px}
+.half-row:last-child{margin-bottom:0}
+.half-title{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.half-title .icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.half-title.first .icon{background:rgba(59,130,246,.25);color:#60a5fa}
+.half-title.second .icon{background:rgba(168,85,247,.25);color:#a78bfa}
+.half-teams{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.half-team-stat{background:rgba(255,255,255,.04);border-radius:10px;padding:10px;text-align:center}
+.half-team-stat .team{font-size:10px;color:#94a3b8;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.half-team-stat .goals{font-size:20px;font-weight:900}
+.half-team-stat.home .goals{color:#60a5fa}
+.half-team-stat.away .goals{color:#a78bfa}
+.half-total{background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(168,85,247,.15));border-radius:10px;padding:10px;text-align:center;margin-top:8px}
+.half-total .lbl{font-size:10px;color:#94a3b8;margin-bottom:2px}
+.half-total .val{font-size:18px;font-weight:900;color:#fff}
+.factors-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
+.factors-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:12px}
+.factor-item{font-size:13px;color:#e2e8f0;padding:6px 0;display:flex;align-items:center;gap:8px}
+.factor-dot{color:#60a5fa}
+.loading{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100}
+.loading.show{display:flex}
+.spinner{width:50px;height:50px;border:4px solid #3b82f6;border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:#cbd5e1}
+.loading .progress{font-size:11px;color:#60a5fa;margin-top:6px;font-weight:700}
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+footer{text-align:center;color:#64748b;font-size:11px;padding:20px;border-top:1px solid rgba(255,255,255,.08);margin-top:20px}
+.no-data{text-align:center;color:#94a3b8;padding:40px 20px;background:rgba(255,255,255,.05);border-radius:14px;font-size:14px}
+.debug-info{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:10px;color:#10b981}
+.error-box{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;color:#fca5a5}
+</style>
+</head>
+<body>
+
+<header>
+<button class="logo-wrap" onclick="goHome()">
+<div class="logo">M</div>
+<div class="logo-text"><h1>المحلل</h1><p>تحليل ذكي</p></div>
+</button>
+</header>
+
+<div id="view-leagues" class="view active">
+<div class="container">
+<div class="hero"><h2>اختر البطولة</h2><p>جدول المباريات من ESPN مباشرة</p></div>
+<div class="categories" id="categories"></div>
+<div class="leagues-grid" id="leaguesList"></div>
+</div>
+</div>
+
+<div id="view-matches" class="view">
+<div class="container">
+<button class="back-btn" onclick="goHome()">← رجوع</button>
+<div class="league-header"><h3 id="leagueTitle">—</h3><p id="leagueSub">—</p></div>
+<div id="matchesList"></div>
+</div>
+</div>
+
+<div id="view-predict" class="view">
+<div class="container">
+<button class="back-btn" onclick="backToMatches()">← رجوع</button>
+<div id="predictContent"></div>
+</div>
+</div>
+
+<div class="loading" id="loading">
+<div style="text-align:center">
+<div class="spinner"></div>
+<p id="loadingText">جاري التحميل...</p>
+<div class="progress" id="loadingProgress"></div>
+</div>
+</div>
+
+<footer><p>© 2025 المحلل — للاستخدام الترفيهي</p></footer>
+
+<script>
+var ESPN_SOCCER = "https://site.api.espn.com/apis/site/v2/sports/soccer";
+var currentLeague = null;
+var currentCat = "all";
+var allEvents = [];
+var currentEvents = [];
+var currentDateFilter = "all";
+var searchQuery = "";
+
+var AR_NAMES = {
+"France":"فرنسا","Germany":"ألمانيا","Spain":"إسبانيا","Italy":"إيطاليا","England":"إنجلترا",
+"Portugal":"البرتغال","Netherlands":"هولندا","Belgium":"بلجيكا","Croatia":"كرواتيا","Switzerland":"سويسرا",
+"Denmark":"الدنمارك","Sweden":"السويد","Norway":"النرويج","Poland":"بولندا","Austria":"النمسا",
+"Scotland":"اسكتلندا","Wales":"ويلز","Ireland":"أيرلندا","Serbia":"صربيا","Ukraine":"أوكرانيا",
+"Greece":"اليونان","Czechia":"التشيك","Hungary":"المجر","Romania":"رومانيا","Slovakia":"سلوفاكيا",
+"Slovenia":"سلوفينيا","Albania":"ألبانيا","Georgia":"جورجيا","Iceland":"آيسلندا","Finland":"فنلندا",
+"Bulgaria":"بلغاريا","Israel":"إسرائيل","Turkey":"تركيا","Latvia":"لاتفيا","Armenia":"أرمينيا",
+"Lithuania":"ليتوانيا","Estonia":"إستونيا","Luxembourg":"لوكسمبورغ","Malta":"مالطا",
+"Cyprus":"قبرص","Andorra":"أندورا","San Marino":"سان مارينو","Gibraltar":"جبل طارق",
+"Faroe Islands":"جزر فارو","Moldova":"مولدوفا","Azerbaijan":"أذربيجان","Kazakhstan":"كازاخستان",
+"Brazil":"البرازيل","Argentina":"الأرجنتين","Uruguay":"أوروغواي","Colombia":"كولومبيا","Chile":"تشيلي",
+"Mexico":"المكسيك","USA":"الولايات المتحدة","United States":"الولايات المتحدة","Canada":"كندا",
+"Peru":"بيرو","Ecuador":"الإكوادور","Paraguay":"باراغواي","Bolivia":"بوليفيا","Venezuela":"فنزويلا",
+"Japan":"اليابان","South Korea":"كوريا الجنوبية","Korea Republic":"كوريا الجنوبية","Australia":"أستراليا",
+"Iran":"إيران","Saudi Arabia":"السعودية","Qatar":"قطر","UAE":"الإمارات","United Arab Emirates":"الإمارات",
+"Iraq":"العراق","Jordan":"الأردن","Syria":"سوريا","Lebanon":"لبنان","Oman":"عمان","Bahrain":"البحرين",
+"Kuwait":"الكويت","Palestine":"فلسطين","China":"الصين","India":"الهند","Thailand":"تايلاند",
+"Vietnam":"فيتنام","Indonesia":"إندونيسيا","Uzbekistan":"أوزبكستان","North Korea":"كوريا الشمالية",
+"Morocco":"المغرب","Egypt":"مصر","Tunisia":"تونس","Algeria":"الجزائر","Senegal":"السنغال",
+"Nigeria":"نيجيريا","Cameroon":"الكاميرون","Ghana":"غانا","South Africa":"جنوب أفريقيا",
+"Ivory Coast":"ساحل العاج","Mali":"مالي","Burkina Faso":"بوركينا فاسو","Cape Verde":"الرأس الأخضر",
+"DR Congo":"الكونغو الديمقراطية","Guinea":"غينيا","Kenya":"كينيا","Ethiopia":"إثيوبيا",
+"Arsenal":"آرسنال","Aston Villa":"أستون فيلا","Chelsea":"تشيلسي","Everton":"إيفرتون",
+"Liverpool":"ليفربول","Manchester City":"مانشستر سيتي","Manchester United":"مانشستر يونايتد",
+"Tottenham Hotspur":"توتنهام","Newcastle United":"نيوكاسل يونايتد","West Ham United":"وست هام يونايتد",
+"Brighton & Hove Albion":"برايتون","Crystal Palace":"كريستال بالاس","Fulham":"فولهام",
+"Nottingham Forest":"نوتينغهام فورست","Wolverhampton Wanderers":"وولفرهامبتون","Brentford":"برينتفورد",
+"Bournemouth":"بورنموث","Leicester City":"ليستر سيتي","Southampton":"ساوثهامبتون","Ipswich Town":"إبسويتش",
+"Real Madrid":"ريال مدريد","Barcelona":"برشلونة","Atletico Madrid":"أتلتيكو مدريد",
+"Athletic Club":"أتلتيك بلباو","Real Sociedad":"ريال سوسيداد","Real Betis":"ريال بيتيس",
+"Sevilla":"إشبيلية","Villarreal":"فياريال","Valencia":"فالنسيا","Girona":"جيرونا",
+"Osasuna":"أوساسونا","Celta Vigo":"سيلتا فيغو","Mallorca":"مايوركا","Getafe":"خيتافي",
+"AC Milan":"ميلان","Inter Milan":"إنتر ميلان","Juventus":"يوفنتوس","Napoli":"نابولي",
+"Roma":"روما","Lazio":"لاتسيو","Atalanta":"أتالانتا","Fiorentina":"فيورنتينا","Bologna":"بولونيا",
+"Torino":"تورينو","Udinese":"أودينيزي","Genoa":"جنوى",
+"Bayern Munich":"بايرن ميونخ","Borussia Dortmund":"بوروسيا دورتموند","RB Leipzig":"لايبزيغ",
+"Bayer Leverkusen":"باير ليفركوزن","Eintracht Frankfurt":"آينتراخت فرانكفورت",
+"VfB Stuttgart":"شتوتغارت","VfL Wolfsburg":"فولفسبورغ","SC Freiburg":"فرايبورغ",
+"Werder Bremen":"فيردر بريمن","FC Augsburg":"أوغسبورغ","Union Berlin":"أونيون برلين",
+"Paris Saint-Germain":"باريس سان جيرمان","Marseille":"مارسيليا","Lyon":"ليون","Monaco":"موناكو",
+"Lille":"ليل","Nice":"نيس","Lens":"لانس","Rennes":"رين",
+"Benfica":"بنفيكا","Porto":"بورتو","Sporting CP":"سبورتينغ لشبونة","Braga":"براغا",
+"Ajax":"أياكس","PSV Eindhoven":"آيندهوفن","Feyenoord":"فينورد",
+"Galatasaray":"غلطة سراي","Fenerbahce":"فنربخشة","Besiktas":"بشكتاش",
+"Al Hilal":"الهلال","Al Nassr":"النصر","Al Ittihad":"الاتحاد","Al Ahli":"الأهلي",
+"Al Shabab":"الشباب","Al Ettifaq":"الاتفاق","Al Taawoun":"التعاون","Al Fateh":"الفتح",
+"Al Fayha":"الفيحاء","Al Khaleej":"الخليج","Al Riyadh":"الرياض","Al Wehda":"الوحدة",
+"Al Ahly":"الأهلي","Zamalek":"الزمالك","Pyramids":"بيراميدز","Pyramids FC":"بيراميدز",
+"Celtic":"سلتيك","Rangers":"رينجرز"
+};
+
+function arName(name){
+if(!name)return "";
+if(AR_NAMES[name])return AR_NAMES[name];
+var lname=name.toLowerCase();
+for(var k in AR_NAMES){
+if(lname.indexOf(k.toLowerCase())>-1 && k.length>4)return AR_NAMES[k];
+}
+return name;
+}
+
+var LEAGUES=[
+{id:"uefa.nations",ar:"دوري الأمم الأوروبية",en:"UEFA Nations League",cat:"continental"},
+{id:"uefa.champions",ar:"دوري أبطال أوروبا",en:"UEFA Champions League",cat:"continental"},
+{id:"uefa.champions_qual",ar:"تصفيات دوري الأبطال",en:"UCL Qualifiers",cat:"continental"},
+{id:"uefa.europa",ar:"الدوري الأوروبي",en:"UEFA Europa League",cat:"continental"},
+{id:"uefa.europa_qual",ar:"تصفيات الدوري الأوروبي",en:"UEL Qualifiers",cat:"continental"},
+{id:"uefa.euro",ar:"كأس أمم أوروبا",en:"UEFA Euro",cat:"continental"},
+{id:"uefa.euroq",ar:"تصفيات يورو",en:"UEFA Euro Qualifiers",cat:"continental"},
+{id:"concacaf.gold",ar:"الكأس الذهبية",en:"CONCACAF Gold Cup",cat:"continental"},
+{id:"concacaf.nations.league",ar:"دوري أمم الكونكاكاف",en:"CONCACAF Nations League",cat:"continental"},
+{id:"caf.nations",ar:"كأس أفريقيا",en:"Africa Cup of Nations",cat:"continental"},
+{id:"caf.nations_qual",ar:"تصفيات كأس أفريقيا",en:"AFCON Qualifiers",cat:"continental"},
+{id:"afc.asian",ar:"كأس آسيا",en:"AFC Asian Cup",cat:"continental"},
+{id:"afc.asian.cup_qual",ar:"تصفيات كأس آسيا",en:"AFC Asian Qualifiers",cat:"continental"},
+{id:"conmebol.america",ar:"كوبا أمريكا",en:"Copa America",cat:"continental"},
+{id:"fifa.worldq.uefa",ar:"تصفيات كأس العالم - أوروبا",en:"WC Qualifiers UEFA",cat:"qualifiers"},
+{id:"fifa.worldq.conmebol",ar:"تصفيات كأس العالم - أمريكا الجنوبية",en:"WC Qualifiers CONMEBOL",cat:"qualifiers"},
+{id:"fifa.worldq.caf",ar:"تصفيات كأس العالم - أفريقيا",en:"WC Qualifiers CAF",cat:"qualifiers"},
+{id:"fifa.worldq.afc",ar:"تصفيات كأس العالم - آسيا",en:"WC Qualifiers AFC",cat:"qualifiers"},
+{id:"fifa.worldq.concacaf",ar:"تصفيات كأس العالم - أمريكا الشمالية",en:"WC Qualifiers CONCACAF",cat:"qualifiers"},
+{id:"fifa.friendly",ar:"المباريات الودية",en:"International Friendlies",cat:"qualifiers"},
+{id:"fifa.friendly_w",ar:"وديات السيدات",en:"Women Friendlies",cat:"qualifiers"},
+{id:"eng.1",ar:"الدوري الإنجليزي",en:"Premier League",cat:"europe"},
+{id:"eng.2",ar:"دوري البطولة الإنجليزية",en:"EFL Championship",cat:"europe"},
+{id:"eng.fa",ar:"كأس الاتحاد الإنجليزي",en:"FA Cup",cat:"europe"},
+{id:"eng.league_cup",ar:"كأس الرابطة الإنجليزية",en:"EFL Cup",cat:"europe"},
+{id:"esp.1",ar:"الدوري الإسباني",en:"La Liga",cat:"europe"},
+{id:"esp.2",ar:"الدرجة الثانية الإسبانية",en:"Segunda División",cat:"europe"},
+{id:"esp.copa_del_rey",ar:"كأس ملك إسبانيا",en:"Copa del Rey",cat:"europe"},
+{id:"ita.1",ar:"الدوري الإيطالي",en:"Serie A",cat:"europe"},
+{id:"ita.2",ar:"الدرجة الثانية الإيطالية",en:"Serie B",cat:"europe"},
+{id:"ita.coppa_italia",ar:"كأس إيطاليا",en:"Coppa Italia",cat:"europe"},
+{id:"ger.1",ar:"الدوري الألماني",en:"Bundesliga",cat:"europe"},
+{id:"ger.2",ar:"الدرجة الثانية الألمانية",en:"2. Bundesliga",cat:"europe"},
+{id:"ger.dfb_pokal",ar:"كأس ألمانيا",en:"DFB Pokal",cat:"europe"},
+{id:"fra.1",ar:"الدوري الفرنسي",en:"Ligue 1",cat:"europe"},
+{id:"fra.2",ar:"الدرجة الثانية الفرنسية",en:"Ligue 2",cat:"europe"},
+{id:"fra.coupe_de_france",ar:"كأس فرنسا",en:"Coupe de France",cat:"europe"},
+{id:"por.1",ar:"الدوري البرتغالي",en:"Primeira Liga",cat:"europe"},
+{id:"ned.1",ar:"الدوري الهولندي",en:"Eredivisie",cat:"europe"},
+{id:"tur.1",ar:"الدوري التركي",en:"Süper Lig",cat:"europe"},
+{id:"sco.1",ar:"الدوري الاسكتلندي",en:"Scottish Premiership",cat:"europe"},
+{id:"bel.1",ar:"الدوري البلجيكي",en:"Belgian Pro League",cat:"europe"},
+{id:"gre.1",ar:"الدوري اليوناني",en:"Greek Super League",cat:"europe"},
+{id:"rus.1",ar:"الدوري الروسي",en:"Russian Premier League",cat:"europe"},
+{id:"ksa.1",ar:"الدوري السعودي",en:"Saudi Pro League",cat:"arab"},
+{id:"egy.1",ar:"الدوري المصري",en:"Egyptian Premier",cat:"arab"},
+{id:"uae.1",ar:"الدوري الإماراتي",en:"UAE Pro League",cat:"arab"},
+{id:"mar.1",ar:"الدوري المغربي",en:"Botola Pro",cat:"arab"},
+{id:"qat.1",ar:"الدوري القطري",en:"Qatar Stars League",cat:"arab"},
+{id:"irn.1",ar:"الدوري الإيراني",en:"Persian Gulf Pro League",cat:"arab"}
+];
+
+var CATEGORIES=[
+{id:"all",ar:"الكل"},
+{id:"continental",ar:"🏆 قارية"},
+{id:"qualifiers",ar:"🌏 تصفيات ووديات"},
+{id:"europe",ar:"🌍 أوروبا"},
+{id:"arab",ar:"🌙 عربية"}
+];
+
+function showView(id){
+var views=document.querySelectorAll(".view");
+for(var i=0;i<views.length;i++)views[i].classList.remove("active");
+document.getElementById(id).classList.add("active");
+window.scrollTo(0,0);
+}
+function goHome(){searchQuery="";showView("view-leagues");}
+function backToMatches(){showView("view-matches");}
+
+function renderCategories(){
+var html="";
+for(var i=0;i<CATEGORIES.length;i++){
+var c=CATEGORIES[i];
+html+='<button class="cat-btn '+(currentCat===c.id?"active":"")+'" onclick="setCat(\''+c.id+'\')">'+c.ar+'</button>';
+}
+document.getElementById("categories").innerHTML=html;
+}
+
+function setCat(id){currentCat=id;renderCategories();renderLeagues(id);}
+
+function renderLeagues(cat){
+var list=[];
+for(var i=0;i<LEAGUES.length;i++){
+if(cat==="all"||LEAGUES[i].cat===cat)list.push(LEAGUES[i]);
+}
+var html="";
+for(var j=0;j<list.length;j++){
+var l=list[j];
+html+='<button class="league-card" onclick="openLeague(\''+l.id+'\')"><div class="name">'+l.ar+'</div><div class="name-en">'+l.en+'</div></button>';
+}
+document.getElementById("leaguesList").innerHTML=html;
+}
+
+function pad(n){return n<10?"0"+n:""+n;}
+function formatESPN(d){return ""+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());}
+function formatLocal(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function offsetESPN(days){var d=new Date();d.setDate(d.getDate()+days);return formatESPN(d);}
+function offsetLocal(days){var d=new Date();d.setDate(d.getDate()+days);return formatLocal(d);}
+function dateToLocal(dateStr){if(!dateStr)return "";var d=new Date(dateStr);return formatLocal(d);}
+
+function showLoading(){document.getElementById("loading").classList.add("show");}
+function hideLoading(){document.getElementById("loading").classList.remove("show");}
+function setProgress(t){var el=document.getElementById("loadingProgress");if(el)el.textContent=t||"";}
+
+async function fetchESPN(slug,startDate,endDate){
+var url=ESPN_SOCCER+"/"+slug+"/scoreboard?dates="+startDate+"-"+endDate+"&limit=500";
+console.log("ESPN URL:",url);
+try{
+var res=await fetch(url);
+if(!res.ok){console.error("HTTP:",res.status);return [];}
+var text=await res.text();
+if(!text||text.trim().length===0)return [];
+var data;
+try{data=JSON.parse(text);}catch(e){return [];}
+console.log("Events:",(data.events||[]).length);
+return data.events||[];
+}catch(e){console.error("Fetch error:",e);return [];}
+}
+
+function normalizeEvent(e,slug){
+var comp=e.competitions&&e.competitions[0];
+if(!comp)return null;
+var home=null,away=null;
+if(comp.competitors){
+for(var i=0;i<comp.competitors.length;i++){
+if(comp.competitors[i].homeAway==="home")home=comp.competitors[i];
+if(comp.competitors[i].homeAway==="away")away=comp.competitors[i];
+}
+}
+if(!home||!away)return null;
+var state="pre";
+if(comp.status&&comp.status.type&&comp.status.type.state)state=comp.status.type.state;
+var isPlayed=(state==="post"||state==="in");
+var dateStr="",timeStr="";
+if(e.date){
+var parts=e.date.split("T");
+dateStr=parts[0];
+if(parts[1])timeStr=parts[1].substring(0,5);
+}
+return {
+idEvent:e.id,
+strHomeTeam:(home.team.displayName||home.team.name||""),
+strAwayTeam:(away.team.displayName||away.team.name||""),
+strHomeTeamBadge:home.team.logo||"",
+strAwayTeamBadge:away.team.logo||"",
+intHomeScore:isPlayed?(home.score||"0"):null,
+intAwayScore:isPlayed?(away.score||"0"):null,
+dateEvent:dateStr,
+strTime:timeStr,
+strStatus:state
+};
+}
+
+async function openLeague(id){
+var league=null;
+for(var i=0;i<LEAGUES.length;i++)if(LEAGUES[i].id===id)league=LEAGUES[i];
+if(!league)return;
+currentLeague=league;
+currentDateFilter="all";
+searchQuery="";
+showLoading();
+setProgress("📡 جلب المباريات من ESPN...");
+
+var startDate=offsetESPN(-30);
+var endDate=offsetESPN(30);
+console.log("Range:",startDate,"to",endDate);
+
+var rawEvents=await fetchESPN(id,startDate,endDate);
+var events=[];
+for(var i=0;i<rawEvents.length;i++){
+var n=normalizeEvent(rawEvents[i],id);
+if(n)events.push(n);
+}
+
+var today=offsetLocal(0);
+events.sort(function(a,b){
+var da=a.dateEvent?new Date(a.dateEvent+"T00:00:00Z").getTime():0;
+var db=b.dateEvent?new Date(b.dateEvent+"T00:00:00Z").getTime():0;
+var ta=new Date(today+"T00:00:00Z").getTime();
+var aUp=da>=ta,bUp=db>=ta;
+if(aUp&&!bUp)return -1;
+if(!aUp&&bUp)return 1;
+return aUp?(da-db):(db-da);
+});
+
+hideLoading();
+setProgress("");
+document.getElementById("leagueTitle").textContent=league.ar;
+document.getElementById("leagueSub").textContent=league.en;
+showView("view-matches");
+allEvents=events;
+currentEvents=events;
+var msg="📡 ESPN • "+events.length+" مباراة";
+if(events.length===0)msg="⚠️ لا توجد مباريات في هذه الفترة";
+renderMatches(events,msg);
+}
+
+function filterByDate(f){currentDateFilter=f;applyFilters();}
+
+function onSearchInput(v){
+searchQuery=v.trim().toLowerCase();
+var box=document.getElementById("searchBox");
+if(v.trim().length>0)box.classList.add("has-text");
+else box.classList.remove("has-text");
+applyFilters();
+}
+
+function clearSearch(){
+document.getElementById("searchInput").value="";
+searchQuery="";
+document.getElementById("searchBox").classList.remove("has-text");
+applyFilters();
+}
+
+function applyFilters(){
+var filtered=allEvents;
+if(currentDateFilter!=="all"){
+var today=offsetLocal(0),tomorrow=offsetLocal(1),yesterday=offsetLocal(-1),weekEnd=offsetLocal(7);
+filtered=filtered.filter(function(e){
+if(!e.dateEvent)return false;
+var ed=dateToLocal(e.dateEvent);
+if(currentDateFilter==="today")return ed===today;
+if(currentDateFilter==="tomorrow")return ed===tomorrow;
+if(currentDateFilter==="yesterday")return ed===yesterday;
+if(currentDateFilter==="week")return ed>=today&&ed<weekEnd;
+return true;
+});
+}
+if(searchQuery.length>0){
+filtered=filtered.filter(function(e){
+var hAr=arName(e.strHomeTeam).toLowerCase(),aAr=arName(e.strAwayTeam).toLowerCase();
+var hEn=(e.strHomeTeam||"").toLowerCase(),aEn=(e.strAwayTeam||"").toLowerCase();
+return hAr.indexOf(searchQuery)>-1||aAr.indexOf(searchQuery)>-1||hEn.indexOf(searchQuery)>-1||aEn.indexOf(searchQuery)>-1;
+});
+}
+currentEvents=filtered;
+renderMatches(filtered);
+}
+
+function renderMatches(events,debugInfo){
+var today=offsetLocal(0),tomorrow=offsetLocal(1),yesterday=offsetLocal(-1);
+var live=0,done=0,soon=0;
+for(var i=0;i<allEvents.length;i++){
+var e=allEvents[i];
+var hasScore=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+var ed=dateToLocal(e.dateEvent);
+if(hasScore&&e.strStatus==="in")live++;
+else if(hasScore)done++;
+else if(ed>=today)soon++;
+}
+var todayCount=0,tomorrowCount=0,yesterdayCount=0;
+for(var i=0;i<allEvents.length;i++){
+var ed=dateToLocal(allEvents[i].dateEvent);
+if(ed===today)todayCount++;
+if(ed===tomorrow)tomorrowCount++;
+if(ed===yesterday)yesterdayCount++;
+}
+
+var summaryHTML='<div class="stats-summary">';
+summaryHTML+='<div class="sum-box total"><div class="num">'+allEvents.length+'</div><div class="lbl">إجمالي</div></div>';
+summaryHTML+='<div class="sum-box live"><div class="num">'+live+'</div><div class="lbl">مباشر</div></div>';
+summaryHTML+='<div class="sum-box done"><div class="num">'+done+'</div><div class="lbl">انتهت</div></div>';
+summaryHTML+='<div class="sum-box soon"><div class="num">'+soon+'</div><div class="lbl">قادمة</div></div>';
+summaryHTML+='</div>';
+
+var searchHTML='<div class="search-box" id="searchBox"><span class="icon">🔍</span>';
+searchHTML+='<input type="text" id="searchInput" placeholder="ابحث عن فريق..." value="'+searchQuery+'" oninput="onSearchInput(this.value)">';
+searchHTML+='<button class="clear-btn" onclick="clearSearch()">✕</button></div>';
+
+var filterHTML='<div class="date-filter">';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="all"?"active":"")+'" onclick="filterByDate(\'all\')">الكل ('+allEvents.length+')</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="yesterday"?"active":"")+(yesterdayCount>0?" has-items":"")+'" onclick="filterByDate(\'yesterday\')">📅 أمس'+(yesterdayCount>0?" ("+yesterdayCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="today"?"active":"")+(todayCount>0?" has-items":"")+'" onclick="filterByDate(\'today\')">📅 اليوم'+(todayCount>0?" ("+todayCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="tomorrow"?"active":"")+(tomorrowCount>0?" has-items":"")+'" onclick="filterByDate(\'tomorrow\')">📅 غدًا'+(tomorrowCount>0?" ("+tomorrowCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="week"?"active":"")+'" onclick="filterByDate(\'week\')">📅 هذا الأسبوع</button>';
+filterHTML+='</div>';
+
+var debugHTML=(debugInfo&&currentDateFilter==="all"&&!searchQuery)?('<div class="debug-info">'+debugInfo+'</div>'):"";
+
+if(!events||events.length===0){
+document.getElementById("matchesList").innerHTML=summaryHTML+searchHTML+filterHTML+'<div class="no-data">لا توجد مباريات متاحة</div>';
+return;
+}
+
+function buildCard(e){
+var ed=dateToLocal(e.dateEvent);
+var time=(e.strTime||"").substring(0,5);
+var isToday=ed===today,isTomorrow=ed===tomorrow,isYesterday=ed===yesterday;
+var hasScore=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+var liveNow=hasScore&&e.strStatus==="in";
+var idx=currentEvents.indexOf(e);
+var hAr=arName(e.strHomeTeam),aAr=arName(e.strAwayTeam);
+var dayName="";
+try{dayName=new Date(e.dateEvent+"T12:00:00").toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"short"});}
+catch(err){dayName=e.dateEvent;}
+var badge="";
+if(liveNow)badge='<span class="badge live">● مباشر</span>';
+else if(isToday&&!hasScore)badge='<span class="badge today">اليوم</span>';
+else if(isTomorrow)badge='<span class="badge tomorrow">غدًا</span>';
+else if(isYesterday)badge='<span class="badge yesterday">أمس</span>';
+else if(hasScore)badge='<span class="badge done">انتهت</span>';
+var cardClass=liveNow?"live":(isToday?"today":(hasScore?"played":""));
+var scoreClass="";
+if(hasScore){
+var h=parseInt(e.intHomeScore),a=parseInt(e.intAwayScore);
+scoreClass=h>a?"win-home":(a>h?"win-away":"draw-game");
+}
+var html='<div class="match-card '+cardClass+'" onclick="openMatchByIndex('+idx+')">';
+html+='<div class="match-date"><div class="left-side">'+badge+'<span>'+dayName+'</span></div><span>'+time+'</span></div>';
+html+='<div class="match-teams">';
+html+='<div class="team-row">'+(e.strHomeTeamBadge?'<img class="team-badge" src="'+e.strHomeTeamBadge+'" onerror="this.style.display=\'none\'">':'')+'<div class="team-name">'+hAr+'</div></div>';
+html+=hasScore?'<div class="match-score '+scoreClass+'">'+e.intHomeScore+' - '+e.intAwayScore+'</div>':'<div class="match-vs">VS</div>';
+html+='<div class="team-row left">'+(e.strAwayTeamBadge?'<img class="team-badge" src="'+e.strAwayTeamBadge+'" onerror="this.style.display=\'none\'">':'')+'<div class="team-name">'+aAr+'</div></div>';
+html+='</div></div>';
+return html;
+}
+
+if(currentDateFilter!=="all"||searchQuery){
+var html=searchHTML+filterHTML;
+html+='<div class="matches-title"><span>المباريات</span><span class="count-badge">'+events.length+'</span></div>';
+var cards="";
+for(var i=0;i<events.length;i++)cards+=buildCard(events[i]);
+html+=cards;
+document.getElementById("matchesList").innerHTML=html;
+return;
+}
+
+var liveM=[],todayM=[],tomorrowM=[],upcomingM=[],yesterdayM=[],pastM=[];
+for(var i=0;i<events.length;i++){
+var e=events[i];
+var ed=dateToLocal(e.dateEvent);
+var has=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+if(has&&e.strStatus==="in")liveM.push(e);
+else if(ed===today)todayM.push(e);
+else if(ed===tomorrow)tomorrowM.push(e);
+else if(ed===yesterday)yesterdayM.push(e);
+else if(ed>today)upcomingM.push(e);
+else pastM.push(e);
+}
+
+function section(title,cls,arr){
+if(arr.length===0)return "";
+var h='<div class="section-header"><span class="dot '+cls+'"></span><span>'+title+'</span>';
+h+='<span style="color:#60a5fa;margin-right:auto;font-size:11px">'+arr.length+'</span></div>';
+for(var i=0;i<arr.length;i++)h+=buildCard(arr[i]);
+return h;
+}
+
+var finalHTML=summaryHTML+searchHTML+filterHTML+debugHTML;
+finalHTML+=section("🔴 مباشر الآن","live",liveM);
+finalHTML+=section("📅 مباريات اليوم","today",todayM);
+finalHTML+=section("📅 مباريات غدًا","upcoming",tomorrowM);
+finalHTML+=section("📆 المباريات القادمة","upcoming",upcomingM);
+finalHTML+=section("📆 نتائج الأمس","past",yesterdayM);
+finalHTML+=section("📆 المباريات السابقة","past",pastM);
+document.getElementById("matchesList").innerHTML=finalHTML;
+}
+
+function hashStr(s){var h=0;s=String(s);for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+function poisson(k,l){if(l<=0)return k===0?1:0;var p=Math.exp(-l);for(var i=1;i<=k;i++)p*=l/i;return p;}
+
+function predict(event){
+var h1=hashStr(event.strHomeTeam);
+var h2=hashStr(event.strAwayTeam);
+var h3=hashStr(event.strHomeTeam+event.strAwayTeam);
+var homeStrength=(h1%50)+35;
+var awayStrength=(h2%50)+30;
+homeStrength+=10;
+homeStrength+=(h3%20)-10;
+var total=homeStrength+awayStrength;
+var homeWin=(homeStrength/total)*70;
+var awayWin=(awayStrength/total)*70;
+var draw=100-homeWin-awayWin;
+if(draw<15)draw=15;
+var rem=100-draw;
+var ratio=homeWin/(homeWin+awayWin);
+homeWin=rem*ratio;
+awayWin=rem*(1-ratio);
+homeWin=Math.round(homeWin);
+awayWin=Math.round(awayWin);
+draw=100-homeWin-awayWin;
+var confidence=55+(Math.abs(homeWin-awayWin)%30);
+var homeGoalsTotal=1+(h1%25)/10;
+var awayGoalsTotal=0.8+(h2%20)/10;
+var homeH1Factor=0.42+((h3%8)/100);
+var awayH1Factor=0.38+((h2%10)/100);
+var homeH1=+(homeGoalsTotal*homeH1Factor).toFixed(1);
+var homeH2=+(homeGoalsTotal*(1-homeH1Factor)).toFixed(1);
+var awayH1=+(awayGoalsTotal*awayH1Factor).toFixed(1);
+var awayH2=+(awayGoalsTotal*(1-awayH1Factor)).toFixed(1);
+var totalH1=+(homeH1+awayH1).toFixed(1);
+var totalH2=+(homeH2+awayH2).toFixed(1);
+var scoreList=[];
+for(var h=0;h<=5;h++)for(var a=0;a<=5;a++){
+scoreList.push({h:h,a:a,prob:poisson(h,homeGoalsTotal)*poisson(a,awayGoalsTotal)});
+}
+var totalProb=scoreList.reduce(function(s,x){return s+x.prob;},0);
+scoreList.forEach(function(x){x.prob=x.prob/totalProb;});
+scoreList.sort(function(x,y){return y.prob-x.prob;});
+var topScores=scoreList.slice(0,3).map(function(x){return {score:x.h+" - "+x.a,prob:+(x.prob*100).toFixed(1)};});
+var totalGoalsExpected=homeGoalsTotal+awayGoalsTotal;
+var earlyProb=45+(totalGoalsExpected-2.5)*8+(h3%10)-5;
+earlyProb=Math.max(30,Math.min(70,earlyProb));
+var lateProb=100-earlyProb;
+return {
+homeWin:homeWin,draw:draw,awayWin:awayWin,confidence:confidence,
+homeGoals:homeGoalsTotal.toFixed(1),awayGoals:awayGoalsTotal.toFixed(1),
+cards:3+(h3%4),corners:8+(h3%6),
+homeH1:homeH1,homeH2:homeH2,awayH1:awayH1,awayH2:awayH2,
+totalH1:totalH1,totalH2:totalH2,topScores:topScores,
+earlyProb:Math.round(earlyProb),lateProb:Math.round(lateProb)
+};
+}
+
+function openMatchByIndex(idx){
+var event=currentEvents[idx];
+if(!event)return;
+var hAr=arName(event.strHomeTeam),aAr=arName(event.strAwayTeam);
+var lAr=currentLeague?currentLeague.ar:"";
+var hB=event.strHomeTeamBadge||"",aB=event.strAwayTeamBadge||"";
+var hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;
+var actual=hasScore?(event.intHomeScore+" - "+event.intAwayScore):"";
+var p=predict(event);
+var winner="تعادل";
+if(p.homeWin>p.awayWin&&p.homeWin>p.draw)winner=hAr;
+else if(p.awayWin>p.draw)winner=aAr;
+var html='<div class="pred-header">';
+html+='<div class="pred-league">'+lAr+'</div>';
+html+='<div class="pred-teams">';
+html+='<div class="pred-team">'+(hB?'<img src="'+hB+'" onerror="this.style.display=\'none\'">':'')+'<div class="name">'+hAr+'</div></div>';
+html+='<div class="pred-vs">VS</div>';
+html+='<div class="pred-team">'+(aB?'<img src="'+aB+'" onerror="this.style.display=\'none\'">':'')+'<div class="name">'+aAr+'</div></div>';
+html+='</div>';
+html+='<div class="pred-date">'+(event.dateEvent||"")+" • "+(event.strTime||"").substring(0,5)+'</div>';
+if(hasScore)html+='<div class="pred-result-box">'+actual+'</div>';
+html+='</div>';
+html+='<div class="pred-title"><div class="label">التوقع الأقرب</div><div class="value">'+winner+'</div></div>';
+html+='<div class="bars-box">';
+html+='<div class="bar-item"><div class="bar-header"><span class="label blue"><span>فوز '+hAr+'</span></span><span class="value">'+p.homeWin+'%</span></div><div class="bar-track"><div class="bar-fill blue" style="width:'+p.homeWin+'%"></div></div></div>';
+html+='<div class="bar-item"><div class="bar-header"><span class="label yellow"><span>تعادل</span></span><span class="value">'+p.draw+'%</span></div><div class="bar-track"><div class="bar-fill yellow" style="width:'+p.draw+'%"></div></div></div>';
+html+='<div class="bar-item"><div class="bar-header"><span class="label purple"><span>فوز '+aAr+'</span></span><span class="value">'+p.awayWin+'%</span></div><div class="bar-track"><div class="bar-fill purple" style="width:'+p.awayWin+'%"></div></div></div>';
+html+='</div>';
+html+='<div class="confidence-box"><span class="label">مستوى الثقة</span><span class="value">'+p.confidence+'%</span></div>';
+html+='<div class="score-box"><h4>🎯 النتائج الأكثر احتمالاً</h4><div class="score-options">';
+for(var i=0;i<p.topScores.length;i++){
+var s=p.topScores[i];
+html+='<div class="score-opt '+(i===0?"top1":"")+'">'+(i===0?'<div class="score-rank">1</div>':'')+'<div class="score-val">'+s.score+'</div><div class="score-pct">'+s.prob+'%</div></div>';
+}
+html+='</div></div>';
+html+='<div class="firstgoal-box"><h4>⏱️ توقيت أول هدف</h4><div class="firstgoal-grid">';
+html+='<div class="fg-opt early"><div class="fg-time">قبل الدقيقة 30</div><div class="fg-pct">'+p.earlyProb+'%</div></div>';
+html+='<div class="fg-opt late"><div class="fg-time">بعد الدقيقة 30</div><div class="fg-pct">'+p.lateProb+'%</div></div>';
+html+='</div></div>';
+html+='<div class="stats-grid">';
+html+='<div class="stat-box"><div class="label">أهداف المضيف</div><div class="value">'+p.homeGoals+'</div></div>';
+html+='<div class="stat-box"><div class="label">أهداف الضيف</div><div class="value">'+p.awayGoals+'</div></div>';
+html+='<div class="stat-box"><div class="label">ركنيات متوقعة</div><div class="value">'+p.corners+'</div></div>';
+html+='<div class="stat-box"><div class="label">بطاقات متوقعة</div><div class="value">'+p.cards+'</div></div>';
+html+='</div>';
+html+='<div class="halves-box"><h4>⚽ توزيع الأهداف على الشوطين</h4>';
+html+='<div class="half-row"><div class="half-title first"><div class="icon">1H</div><span>الشوط الأول</span></div>';
+html+='<div class="half-teams">';
+html+='<div class="half-team-stat home"><div class="team">'+hAr.substring(0,14)+'</div><div class="goals">'+p.homeH1+'</div></div>';
+html+='<div class="half-team-stat away"><div class="team">'+aAr.substring(0,14)+'</div><div class="goals">'+p.awayH1+'</div></div>';
+html+='</div>';
+html+='<div class="half-total"><div class="lbl">إجمالي الشوط الأول</div><div class="val">'+p.totalH1+'</div></div></div>';
+html+='<div class="half-row"><div class="half-title second"><div class="icon">2H</div><span>الشوط الثاني</span></div>';
+html+='<div class="half-teams">';
+html+='<div class="half-team-stat home"><div class="team">'+hAr.substring(0,14)+'</div><div class="goals">'+p.homeH2+'</div></div>';
+html+='<div class="half-team-stat away"><div class="team">'+aAr.substring(0,14)+'</div><div class="goals">'+p.awayH2+'</div></div>';
+html+='</div>';
+html+='<div class="half-total"><div class="lbl">إجمالي الشوط الثاني</div><div class="val">'+p.totalH2+'</div></div></div>';
+html+='</div>';
+html+='<div class="factors-box"><h4>العوامل الرئيسية</h4>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> الحالة الأخيرة للفريقين</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> متوسط الأهداف المسجلة والمستقبلة</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> عامل الأرض والجمهور</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> الفارق الفني والتاريخي</div>';
+html+='</div>';
+document.getElementById("predictContent").innerHTML=html;
+showView("view-predict");
+}
+
+try{
+renderCategories();
+renderLeagues("all");
+}catch(err){
+console.error("Init error:",err);
+document.getElementById("leaguesList").innerHTML='<div class="error-box">خطأ: '+err.message+'</div>';
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المحلل | Al-Muhallil</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
+body{background:#0a0e1a;color:#fff;min-height:100vh;padding-bottom:40px}
+header{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.95);backdrop-filter:blur(15px);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 16px}
+.logo-wrap{display:flex;align-items:center;gap:10px;background:none;border:none;color:inherit;cursor:pointer}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.logo-text h1{font-size:16px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-text p{font-size:10px;color:#94a3b8}
+.container{max-width:900px;margin:0 auto;padding:20px 16px}
+.hero{text-align:center;margin-bottom:20px}
+.hero h2{font-size:24px;font-weight:900;margin-bottom:6px}
+.hero p{color:#94a3b8;font-size:13px}
+.categories{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:16px}
+.categories::-webkit-scrollbar{display:none}
+.cat-btn{padding:8px 16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;font-weight:700;font-size:12px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.cat-btn.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.leagues-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:600px){.leagues-grid{grid-template-columns:repeat(3,1fr)}}
+.league-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;text-align:right;cursor:pointer;color:inherit;font-family:inherit}
+.league-card:active{transform:scale(.97);background:rgba(59,130,246,.15)}
+.league-card .name{font-size:14px;font-weight:900;margin-bottom:4px}
+.league-card .name-en{font-size:10px;color:#94a3b8}
+.back-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px}
+.league-header{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:16px}
+.league-header h3{font-size:18px;font-weight:900}
+.league-header p{font-size:12px;color:#94a3b8}
+.search-box{position:relative;margin-bottom:12px}
+.search-box input{width:100%;padding:12px 40px 12px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font-size:13px;font-family:inherit;outline:none}
+.search-box input:focus{border-color:#3b82f6}
+.search-box input::placeholder{color:#64748b}
+.search-box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#64748b;font-size:14px}
+.search-box .clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);border:none;color:#94a3b8;font-size:14px;cursor:pointer;display:none}
+.search-box.has-text .clear-btn{display:flex;align-items:center;justify-content:center}
+.stats-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.sum-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 4px;text-align:center}
+.sum-box .num{font-size:16px;font-weight:900}
+.sum-box .lbl{font-size:9px;color:#94a3b8;margin-top:2px}
+.sum-box.live .num{color:#ef4444}
+.sum-box.done .num{color:#64748b}
+.sum-box.soon .num{color:#10b981}
+.sum-box.total .num{color:#60a5fa}
+.date-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:12px}
+.date-filter::-webkit-scrollbar{display:none}
+.date-btn{padding:6px 12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#cbd5e1;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.date-btn.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.date-btn.has-items{border-color:rgba(59,130,246,.5)}
+.matches-title{font-size:12px;color:#94a3b8;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.matches-title .count-badge{background:rgba(59,130,246,.2);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#60a5fa}
+.section-header{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#94a3b8;margin:18px 0 8px;padding-right:4px}
+.section-header .dot{width:8px;height:8px;border-radius:50%}
+.section-header .dot.live{background:#ef4444;animation:pulse 1.5s infinite}
+.section-header .dot.today{background:#f59e0b}
+.section-header .dot.upcoming{background:#10b981}
+.section-header .dot.past{background:#64748b}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+.match-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;margin-bottom:8px;width:100%;text-align:right;cursor:pointer;color:inherit;font-family:inherit;position:relative;overflow:hidden}
+.match-card:active{transform:scale(.98);background:rgba(59,130,246,.15)}
+.match-card.live{border-color:rgba(239,68,68,.5);background:linear-gradient(90deg,rgba(239,68,68,.08),rgba(255,255,255,.05))}
+.match-card.live::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:#ef4444}
+.match-card.today{border-color:rgba(245,158,11,.3)}
+.match-card.today::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:#f59e0b}
+.match-card.played{opacity:.85}
+.match-date{display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;margin-bottom:10px;align-items:center}
+.match-date .left-side{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.match-teams{display:flex;align-items:center;gap:8px}
+.team-row{flex:1;display:flex;align-items:center;gap:6px;overflow:hidden}
+.team-row.left{flex-direction:row-reverse}
+.team-badge{width:24px;height:24px;object-fit:contain;flex-shrink:0}
+.team-name{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.match-score{padding:2px 10px;background:rgba(59,130,246,.25);border-radius:6px;font-size:13px;font-weight:900;color:#60a5fa;white-space:nowrap}
+.match-score.win-home{background:rgba(59,130,246,.35);color:#93c5fd}
+.match-score.win-away{background:rgba(168,85,247,.35);color:#c4b5fd}
+.match-score.draw-game{background:rgba(251,191,36,.25);color:#fcd34d}
+.match-vs{padding:2px 10px;background:rgba(255,255,255,.06);border-radius:6px;font-size:11px;color:#94a3b8;white-space:nowrap}
+.badge{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:800;white-space:nowrap}
+.badge.live{background:#ef4444;color:#fff;animation:pulse 1.5s infinite}
+.badge.today{background:#f59e0b;color:#fff}
+.badge.tomorrow{background:#10b981;color:#fff}
+.badge.yesterday{background:#8b5cf6;color:#fff}
+.badge.done{background:rgba(100,116,139,.4);color:#cbd5e1}
+.pred-header{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px;text-align:center;margin-bottom:16px}
+.pred-league{font-size:11px;color:#60a5fa;font-weight:700;margin-bottom:12px}
+.pred-teams{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.pred-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pred-team img{width:50px;height:50px;object-fit:contain}
+.pred-team .name{font-size:14px;font-weight:900;text-align:center}
+.pred-vs{font-size:16px;font-weight:900;color:#64748b}
+.pred-date{font-size:11px;color:#94a3b8}
+.pred-result-box{display:inline-block;padding:8px 20px;background:rgba(59,130,246,.2);border-radius:10px;font-weight:900;margin-top:10px;color:#60a5fa}
+.pred-title{text-align:center;margin-bottom:16px}
+.pred-title .label{font-size:11px;color:#94a3b8;margin-bottom:4px}
+.pred-title .value{font-size:22px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bars-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.bar-item{margin-bottom:16px}
+.bar-item:last-child{margin-bottom:0}
+.bar-header{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;gap:8px}
+.bar-header .label{display:flex;align-items:center;gap:6px;font-weight:700;overflow:hidden}
+.bar-header .label img{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+.bar-header .label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-header .value{font-weight:900;flex-shrink:0}
+.bar-header .blue{color:#60a5fa}
+.bar-header .yellow{color:#fbbf24}
+.bar-header .purple{color:#a78bfa}
+.bar-track{height:8px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:10px;transition:width 1s ease-out}
+.bar-fill.blue{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.bar-fill.yellow{background:linear-gradient(90deg,#eab308,#fbbf24)}
+.bar-fill.purple{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.confidence-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.confidence-box .label{font-size:13px;color:#cbd5e1}
+.confidence-box .value{font-size:20px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.stat-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;text-align:center}
+.stat-box .label{font-size:10px;color:#94a3b8;margin-bottom:4px}
+.stat-box .value{font-size:22px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.score-box{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(168,85,247,.1));border:1px solid rgba(96,165,250,.3);border-radius:16px;padding:18px;margin-bottom:14px}
+.score-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:14px}
+.score-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.score-opt{background:rgba(255,255,255,.05);border-radius:12px;padding:12px 6px;text-align:center;position:relative}
+.score-opt.top1{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(168,85,247,.25));border:1px solid #60a5fa}
+.score-opt .score-val{font-size:22px;font-weight:900;color:#fff;letter-spacing:1px}
+.score-opt .score-pct{font-size:11px;color:#60a5fa;margin-top:4px;font-weight:700}
+.score-opt .score-rank{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#3b82f6;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.firstgoal-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.firstgoal-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:12px}
+.firstgoal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-opt{background:rgba(255,255,255,.05);border-radius:12px;padding:14px;text-align:center}
+.fg-opt .fg-time{font-size:11px;color:#94a3b8;margin-bottom:6px}
+.fg-opt .fg-pct{font-size:22px;font-weight:900;color:#fff}
+.fg-opt.early{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.05));border:1px solid rgba(16,185,129,.3)}
+.fg-opt.early .fg-pct{color:#10b981}
+.fg-opt.late{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.3)}
+.fg-opt.late .fg-pct{color:#f59e0b}
+.halves-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:14px}
+.halves-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:14px}
+.half-row{margin-bottom:16px}
+.half-row:last-child{margin-bottom:0}
+.half-title{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.half-title .icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.half-title.first .icon{background:rgba(59,130,246,.25);color:#60a5fa}
+.half-title.second .icon{background:rgba(168,85,247,.25);color:#a78bfa}
+.half-teams{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.half-team-stat{background:rgba(255,255,255,.04);border-radius:10px;padding:10px;text-align:center}
+.half-team-stat .team{font-size:10px;color:#94a3b8;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.half-team-stat .goals{font-size:20px;font-weight:900}
+.half-team-stat.home .goals{color:#60a5fa}
+.half-team-stat.away .goals{color:#a78bfa}
+.half-total{background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(168,85,247,.15));border-radius:10px;padding:10px;text-align:center;margin-top:8px}
+.half-total .lbl{font-size:10px;color:#94a3b8;margin-bottom:2px}
+.half-total .val{font-size:18px;font-weight:900;color:#fff}
+.factors-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px}
+.factors-box h4{font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:12px}
+.factor-item{font-size:13px;color:#e2e8f0;padding:6px 0;display:flex;align-items:center;gap:8px}
+.factor-dot{color:#60a5fa}
+.loading{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100}
+.loading.show{display:flex}
+.spinner{width:50px;height:50px;border:4px solid #3b82f6;border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:#cbd5e1}
+.loading .progress{font-size:11px;color:#60a5fa;margin-top:6px;font-weight:700}
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+footer{text-align:center;color:#64748b;font-size:11px;padding:20px;border-top:1px solid rgba(255,255,255,.08);margin-top:20px}
+.no-data{text-align:center;color:#94a3b8;padding:40px 20px;background:rgba(255,255,255,.05);border-radius:14px;font-size:14px}
+.debug-info{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:10px;color:#10b981}
+.error-box{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;color:#fca5a5}
+</style>
+</head>
+<body>
+
+<header>
+<button class="logo-wrap" onclick="goHome()">
+<div class="logo">M</div>
+<div class="logo-text"><h1>المحلل</h1><p>تحليل ذكي</p></div>
+</button>
+</header>
+
+<div id="view-leagues" class="view active">
+<div class="container">
+<div class="hero"><h2>اختر البطولة</h2><p>جدول المباريات من ESPN مباشرة</p></div>
+<div class="categories" id="categories"></div>
+<div class="leagues-grid" id="leaguesList"></div>
+</div>
+</div>
+
+<div id="view-matches" class="view">
+<div class="container">
+<button class="back-btn" onclick="goHome()">← رجوع</button>
+<div class="league-header"><h3 id="leagueTitle">—</h3><p id="leagueSub">—</p></div>
+<div id="matchesList"></div>
+</div>
+</div>
+
+<div id="view-predict" class="view">
+<div class="container">
+<button class="back-btn" onclick="backToMatches()">← رجوع</button>
+<div id="predictContent"></div>
+</div>
+</div>
+
+<div class="loading" id="loading">
+<div style="text-align:center">
+<div class="spinner"></div>
+<p id="loadingText">جاري التحميل...</p>
+<div class="progress" id="loadingProgress"></div>
+</div>
+</div>
+
+<footer><p>© 2025 المحلل — للاستخدام الترفيهي</p></footer>
+
+<script>
+var ESPN_SOCCER = "https://site.api.espn.com/apis/site/v2/sports/soccer";
+var currentLeague = null;
+var currentCat = "all";
+var allEvents = [];
+var currentEvents = [];
+var currentDateFilter = "all";
+var searchQuery = "";
+
+var AR_NAMES = {
+"France":"فرنسا","Germany":"ألمانيا","Spain":"إسبانيا","Italy":"إيطاليا","England":"إنجلترا",
+"Portugal":"البرتغال","Netherlands":"هولندا","Belgium":"بلجيكا","Croatia":"كرواتيا","Switzerland":"سويسرا",
+"Denmark":"الدنمارك","Sweden":"السويد","Norway":"النرويج","Poland":"بولندا","Austria":"النمسا",
+"Scotland":"اسكتلندا","Wales":"ويلز","Ireland":"أيرلندا","Serbia":"صربيا","Ukraine":"أوكرانيا",
+"Greece":"اليونان","Czechia":"التشيك","Hungary":"المجر","Romania":"رومانيا","Slovakia":"سلوفاكيا",
+"Slovenia":"سلوفينيا","Albania":"ألبانيا","Georgia":"جورجيا","Iceland":"آيسلندا","Finland":"فنلندا",
+"Bulgaria":"بلغاريا","Israel":"إسرائيل","Turkey":"تركيا","Latvia":"لاتفيا","Armenia":"أرمينيا",
+"Lithuania":"ليتوانيا","Estonia":"إستونيا","Luxembourg":"لوكسمبورغ","Malta":"مالطا",
+"Cyprus":"قبرص","Andorra":"أندورا","San Marino":"سان مارينو","Gibraltar":"جبل طارق",
+"Faroe Islands":"جزر فارو","Moldova":"مولدوفا","Azerbaijan":"أذربيجان","Kazakhstan":"كازاخستان",
+"Brazil":"البرازيل","Argentina":"الأرجنتين","Uruguay":"أوروغواي","Colombia":"كولومبيا","Chile":"تشيلي",
+"Mexico":"المكسيك","USA":"الولايات المتحدة","United States":"الولايات المتحدة","Canada":"كندا",
+"Peru":"بيرو","Ecuador":"الإكوادور","Paraguay":"باراغواي","Bolivia":"بوليفيا","Venezuela":"فنزويلا",
+"Japan":"اليابان","South Korea":"كوريا الجنوبية","Korea Republic":"كوريا الجنوبية","Australia":"أستراليا",
+"Iran":"إيران","Saudi Arabia":"السعودية","Qatar":"قطر","UAE":"الإمارات","United Arab Emirates":"الإمارات",
+"Iraq":"العراق","Jordan":"الأردن","Syria":"سوريا","Lebanon":"لبنان","Oman":"عمان","Bahrain":"البحرين",
+"Kuwait":"الكويت","Palestine":"فلسطين","China":"الصين","India":"الهند","Thailand":"تايلاند",
+"Vietnam":"فيتنام","Indonesia":"إندونيسيا","Uzbekistan":"أوزبكستان","North Korea":"كوريا الشمالية",
+"Morocco":"المغرب","Egypt":"مصر","Tunisia":"تونس","Algeria":"الجزائر","Senegal":"السنغال",
+"Nigeria":"نيجيريا","Cameroon":"الكاميرون","Ghana":"غانا","South Africa":"جنوب أفريقيا",
+"Ivory Coast":"ساحل العاج","Mali":"مالي","Burkina Faso":"بوركينا فاسو","Cape Verde":"الرأس الأخضر",
+"DR Congo":"الكونغو الديمقراطية","Guinea":"غينيا","Kenya":"كينيا","Ethiopia":"إثيوبيا",
+"Arsenal":"آرسنال","Aston Villa":"أستون فيلا","Chelsea":"تشيلسي","Everton":"إيفرتون",
+"Liverpool":"ليفربول","Manchester City":"مانشستر سيتي","Manchester United":"مانشستر يونايتد",
+"Tottenham Hotspur":"توتنهام","Newcastle United":"نيوكاسل يونايتد","West Ham United":"وست هام يونايتد",
+"Brighton & Hove Albion":"برايتون","Crystal Palace":"كريستال بالاس","Fulham":"فولهام",
+"Nottingham Forest":"نوتينغهام فورست","Wolverhampton Wanderers":"وولفرهامبتون","Brentford":"برينتفورد",
+"Bournemouth":"بورنموث","Leicester City":"ليستر سيتي","Southampton":"ساوثهامبتون","Ipswich Town":"إبسويتش",
+"Real Madrid":"ريال مدريد","Barcelona":"برشلونة","Atletico Madrid":"أتلتيكو مدريد",
+"Athletic Club":"أتلتيك بلباو","Real Sociedad":"ريال سوسيداد","Real Betis":"ريال بيتيس",
+"Sevilla":"إشبيلية","Villarreal":"فياريال","Valencia":"فالنسيا","Girona":"جيرونا",
+"Osasuna":"أوساسونا","Celta Vigo":"سيلتا فيغو","Mallorca":"مايوركا","Getafe":"خيتافي",
+"AC Milan":"ميلان","Inter Milan":"إنتر ميلان","Juventus":"يوفنتوس","Napoli":"نابولي",
+"Roma":"روما","Lazio":"لاتسيو","Atalanta":"أتالانتا","Fiorentina":"فيورنتينا","Bologna":"بولونيا",
+"Torino":"تورينو","Udinese":"أودينيزي","Genoa":"جنوى",
+"Bayern Munich":"بايرن ميونخ","Borussia Dortmund":"بوروسيا دورتموند","RB Leipzig":"لايبزيغ",
+"Bayer Leverkusen":"باير ليفركوزن","Eintracht Frankfurt":"آينتراخت فرانكفورت",
+"VfB Stuttgart":"شتوتغارت","VfL Wolfsburg":"فولفسبورغ","SC Freiburg":"فرايبورغ",
+"Werder Bremen":"فيردر بريمن","FC Augsburg":"أوغسبورغ","Union Berlin":"أونيون برلين",
+"Paris Saint-Germain":"باريس سان جيرمان","Marseille":"مارسيليا","Lyon":"ليون","Monaco":"موناكو",
+"Lille":"ليل","Nice":"نيس","Lens":"لانس","Rennes":"رين",
+"Benfica":"بنفيكا","Porto":"بورتو","Sporting CP":"سبورتينغ لشبونة","Braga":"براغا",
+"Ajax":"أياكس","PSV Eindhoven":"آيندهوفن","Feyenoord":"فينورد",
+"Galatasaray":"غلطة سراي","Fenerbahce":"فنربخشة","Besiktas":"بشكتاش",
+"Al Hilal":"الهلال","Al Nassr":"النصر","Al Ittihad":"الاتحاد","Al Ahli":"الأهلي",
+"Al Shabab":"الشباب","Al Ettifaq":"الاتفاق","Al Taawoun":"التعاون","Al Fateh":"الفتح",
+"Al Fayha":"الفيحاء","Al Khaleej":"الخليج","Al Riyadh":"الرياض","Al Wehda":"الوحدة",
+"Al Ahly":"الأهلي","Zamalek":"الزمالك","Pyramids":"بيراميدز","Pyramids FC":"بيراميدز",
+"Celtic":"سلتيك","Rangers":"رينجرز"
+};
+
+function arName(name){
+if(!name)return "";
+if(AR_NAMES[name])return AR_NAMES[name];
+var lname=name.toLowerCase();
+for(var k in AR_NAMES){
+if(lname.indexOf(k.toLowerCase())>-1 && k.length>4)return AR_NAMES[k];
+}
+return name;
+}
+
+var LEAGUES=[
+{id:"uefa.nations",ar:"دوري الأمم الأوروبية",en:"UEFA Nations League",cat:"continental"},
+{id:"uefa.champions",ar:"دوري أبطال أوروبا",en:"UEFA Champions League",cat:"continental"},
+{id:"uefa.champions_qual",ar:"تصفيات دوري الأبطال",en:"UCL Qualifiers",cat:"continental"},
+{id:"uefa.europa",ar:"الدوري الأوروبي",en:"UEFA Europa League",cat:"continental"},
+{id:"uefa.europa_qual",ar:"تصفيات الدوري الأوروبي",en:"UEL Qualifiers",cat:"continental"},
+{id:"uefa.euro",ar:"كأس أمم أوروبا",en:"UEFA Euro",cat:"continental"},
+{id:"uefa.euroq",ar:"تصفيات يورو",en:"UEFA Euro Qualifiers",cat:"continental"},
+{id:"concacaf.gold",ar:"الكأس الذهبية",en:"CONCACAF Gold Cup",cat:"continental"},
+{id:"concacaf.nations.league",ar:"دوري أمم الكونكاكاف",en:"CONCACAF Nations League",cat:"continental"},
+{id:"caf.nations",ar:"كأس أفريقيا",en:"Africa Cup of Nations",cat:"continental"},
+{id:"caf.nations_qual",ar:"تصفيات كأس أفريقيا",en:"AFCON Qualifiers",cat:"continental"},
+{id:"afc.asian",ar:"كأس آسيا",en:"AFC Asian Cup",cat:"continental"},
+{id:"afc.asian.cup_qual",ar:"تصفيات كأس آسيا",en:"AFC Asian Qualifiers",cat:"continental"},
+{id:"conmebol.america",ar:"كوبا أمريكا",en:"Copa America",cat:"continental"},
+{id:"fifa.worldq.uefa",ar:"تصفيات كأس العالم - أوروبا",en:"WC Qualifiers UEFA",cat:"qualifiers"},
+{id:"fifa.worldq.conmebol",ar:"تصفيات كأس العالم - أمريكا الجنوبية",en:"WC Qualifiers CONMEBOL",cat:"qualifiers"},
+{id:"fifa.worldq.caf",ar:"تصفيات كأس العالم - أفريقيا",en:"WC Qualifiers CAF",cat:"qualifiers"},
+{id:"fifa.worldq.afc",ar:"تصفيات كأس العالم - آسيا",en:"WC Qualifiers AFC",cat:"qualifiers"},
+{id:"fifa.worldq.concacaf",ar:"تصفيات كأس العالم - أمريكا الشمالية",en:"WC Qualifiers CONCACAF",cat:"qualifiers"},
+{id:"fifa.friendly",ar:"المباريات الودية",en:"International Friendlies",cat:"qualifiers"},
+{id:"fifa.friendly_w",ar:"وديات السيدات",en:"Women Friendlies",cat:"qualifiers"},
+{id:"eng.1",ar:"الدوري الإنجليزي",en:"Premier League",cat:"europe"},
+{id:"eng.2",ar:"دوري البطولة الإنجليزية",en:"EFL Championship",cat:"europe"},
+{id:"eng.fa",ar:"كأس الاتحاد الإنجليزي",en:"FA Cup",cat:"europe"},
+{id:"eng.league_cup",ar:"كأس الرابطة الإنجليزية",en:"EFL Cup",cat:"europe"},
+{id:"esp.1",ar:"الدوري الإسباني",en:"La Liga",cat:"europe"},
+{id:"esp.2",ar:"الدرجة الثانية الإسبانية",en:"Segunda División",cat:"europe"},
+{id:"esp.copa_del_rey",ar:"كأس ملك إسبانيا",en:"Copa del Rey",cat:"europe"},
+{id:"ita.1",ar:"الدوري الإيطالي",en:"Serie A",cat:"europe"},
+{id:"ita.2",ar:"الدرجة الثانية الإيطالية",en:"Serie B",cat:"europe"},
+{id:"ita.coppa_italia",ar:"كأس إيطاليا",en:"Coppa Italia",cat:"europe"},
+{id:"ger.1",ar:"الدوري الألماني",en:"Bundesliga",cat:"europe"},
+{id:"ger.2",ar:"الدرجة الثانية الألمانية",en:"2. Bundesliga",cat:"europe"},
+{id:"ger.dfb_pokal",ar:"كأس ألمانيا",en:"DFB Pokal",cat:"europe"},
+{id:"fra.1",ar:"الدوري الفرنسي",en:"Ligue 1",cat:"europe"},
+{id:"fra.2",ar:"الدرجة الثانية الفرنسية",en:"Ligue 2",cat:"europe"},
+{id:"fra.coupe_de_france",ar:"كأس فرنسا",en:"Coupe de France",cat:"europe"},
+{id:"por.1",ar:"الدوري البرتغالي",en:"Primeira Liga",cat:"europe"},
+{id:"ned.1",ar:"الدوري الهولندي",en:"Eredivisie",cat:"europe"},
+{id:"tur.1",ar:"الدوري التركي",en:"Süper Lig",cat:"europe"},
+{id:"sco.1",ar:"الدوري الاسكتلندي",en:"Scottish Premiership",cat:"europe"},
+{id:"bel.1",ar:"الدوري البلجيكي",en:"Belgian Pro League",cat:"europe"},
+{id:"gre.1",ar:"الدوري اليوناني",en:"Greek Super League",cat:"europe"},
+{id:"rus.1",ar:"الدوري الروسي",en:"Russian Premier League",cat:"europe"},
+{id:"ksa.1",ar:"الدوري السعودي",en:"Saudi Pro League",cat:"arab"},
+{id:"egy.1",ar:"الدوري المصري",en:"Egyptian Premier",cat:"arab"},
+{id:"uae.1",ar:"الدوري الإماراتي",en:"UAE Pro League",cat:"arab"},
+{id:"mar.1",ar:"الدوري المغربي",en:"Botola Pro",cat:"arab"},
+{id:"qat.1",ar:"الدوري القطري",en:"Qatar Stars League",cat:"arab"},
+{id:"irn.1",ar:"الدوري الإيراني",en:"Persian Gulf Pro League",cat:"arab"}
+];
+
+var CATEGORIES=[
+{id:"all",ar:"الكل"},
+{id:"continental",ar:"🏆 قارية"},
+{id:"qualifiers",ar:"🌏 تصفيات ووديات"},
+{id:"europe",ar:"🌍 أوروبا"},
+{id:"arab",ar:"🌙 عربية"}
+];
+
+function showView(id){
+var views=document.querySelectorAll(".view");
+for(var i=0;i<views.length;i++)views[i].classList.remove("active");
+document.getElementById(id).classList.add("active");
+window.scrollTo(0,0);
+}
+function goHome(){searchQuery="";showView("view-leagues");}
+function backToMatches(){showView("view-matches");}
+
+function renderCategories(){
+var html="";
+for(var i=0;i<CATEGORIES.length;i++){
+var c=CATEGORIES[i];
+html+='<button class="cat-btn '+(currentCat===c.id?"active":"")+'" onclick="setCat(\''+c.id+'\')">'+c.ar+'</button>';
+}
+document.getElementById("categories").innerHTML=html;
+}
+
+function setCat(id){currentCat=id;renderCategories();renderLeagues(id);}
+
+function renderLeagues(cat){
+var list=[];
+for(var i=0;i<LEAGUES.length;i++){
+if(cat==="all"||LEAGUES[i].cat===cat)list.push(LEAGUES[i]);
+}
+var html="";
+for(var j=0;j<list.length;j++){
+var l=list[j];
+html+='<button class="league-card" onclick="openLeague(\''+l.id+'\')"><div class="name">'+l.ar+'</div><div class="name-en">'+l.en+'</div></button>';
+}
+document.getElementById("leaguesList").innerHTML=html;
+}
+
+function pad(n){return n<10?"0"+n:""+n;}
+function formatESPN(d){return ""+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());}
+function formatLocal(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function offsetESPN(days){var d=new Date();d.setDate(d.getDate()+days);return formatESPN(d);}
+function offsetLocal(days){var d=new Date();d.setDate(d.getDate()+days);return formatLocal(d);}
+function dateToLocal(dateStr){if(!dateStr)return "";var d=new Date(dateStr);return formatLocal(d);}
+
+function showLoading(){document.getElementById("loading").classList.add("show");}
+function hideLoading(){document.getElementById("loading").classList.remove("show");}
+function setProgress(t){var el=document.getElementById("loadingProgress");if(el)el.textContent=t||"";}
+
+async function fetchESPN(slug,startDate,endDate){
+var url=ESPN_SOCCER+"/"+slug+"/scoreboard?dates="+startDate+"-"+endDate+"&limit=500";
+console.log("ESPN URL:",url);
+try{
+var res=await fetch(url);
+if(!res.ok){console.error("HTTP:",res.status);return [];}
+var text=await res.text();
+if(!text||text.trim().length===0)return [];
+var data;
+try{data=JSON.parse(text);}catch(e){return [];}
+console.log("Events:",(data.events||[]).length);
+return data.events||[];
+}catch(e){console.error("Fetch error:",e);return [];}
+}
+
+function normalizeEvent(e,slug){
+var comp=e.competitions&&e.competitions[0];
+if(!comp)return null;
+var home=null,away=null;
+if(comp.competitors){
+for(var i=0;i<comp.competitors.length;i++){
+if(comp.competitors[i].homeAway==="home")home=comp.competitors[i];
+if(comp.competitors[i].homeAway==="away")away=comp.competitors[i];
+}
+}
+if(!home||!away)return null;
+var state="pre";
+if(comp.status&&comp.status.type&&comp.status.type.state)state=comp.status.type.state;
+var isPlayed=(state==="post"||state==="in");
+var dateStr="",timeStr="";
+if(e.date){
+var parts=e.date.split("T");
+dateStr=parts[0];
+if(parts[1])timeStr=parts[1].substring(0,5);
+}
+return {
+idEvent:e.id,
+strHomeTeam:(home.team.displayName||home.team.name||""),
+strAwayTeam:(away.team.displayName||away.team.name||""),
+strHomeTeamBadge:home.team.logo||"",
+strAwayTeamBadge:away.team.logo||"",
+intHomeScore:isPlayed?(home.score||"0"):null,
+intAwayScore:isPlayed?(away.score||"0"):null,
+dateEvent:dateStr,
+strTime:timeStr,
+strStatus:state
+};
+}
+
+async function openLeague(id){
+var league=null;
+for(var i=0;i<LEAGUES.length;i++)if(LEAGUES[i].id===id)league=LEAGUES[i];
+if(!league)return;
+currentLeague=league;
+currentDateFilter="all";
+searchQuery="";
+showLoading();
+setProgress("📡 جلب المباريات من ESPN...");
+
+var startDate=offsetESPN(-30);
+var endDate=offsetESPN(30);
+console.log("Range:",startDate,"to",endDate);
+
+var rawEvents=await fetchESPN(id,startDate,endDate);
+var events=[];
+for(var i=0;i<rawEvents.length;i++){
+var n=normalizeEvent(rawEvents[i],id);
+if(n)events.push(n);
+}
+
+var today=offsetLocal(0);
+events.sort(function(a,b){
+var da=a.dateEvent?new Date(a.dateEvent+"T00:00:00Z").getTime():0;
+var db=b.dateEvent?new Date(b.dateEvent+"T00:00:00Z").getTime():0;
+var ta=new Date(today+"T00:00:00Z").getTime();
+var aUp=da>=ta,bUp=db>=ta;
+if(aUp&&!bUp)return -1;
+if(!aUp&&bUp)return 1;
+return aUp?(da-db):(db-da);
+});
+
+hideLoading();
+setProgress("");
+document.getElementById("leagueTitle").textContent=league.ar;
+document.getElementById("leagueSub").textContent=league.en;
+showView("view-matches");
+allEvents=events;
+currentEvents=events;
+var msg="📡 ESPN • "+events.length+" مباراة";
+if(events.length===0)msg="⚠️ لا توجد مباريات في هذه الفترة";
+renderMatches(events,msg);
+}
+
+function filterByDate(f){currentDateFilter=f;applyFilters();}
+
+function onSearchInput(v){
+searchQuery=v.trim().toLowerCase();
+var box=document.getElementById("searchBox");
+if(v.trim().length>0)box.classList.add("has-text");
+else box.classList.remove("has-text");
+applyFilters();
+}
+
+function clearSearch(){
+document.getElementById("searchInput").value="";
+searchQuery="";
+document.getElementById("searchBox").classList.remove("has-text");
+applyFilters();
+}
+
+function applyFilters(){
+var filtered=allEvents;
+if(currentDateFilter!=="all"){
+var today=offsetLocal(0),tomorrow=offsetLocal(1),yesterday=offsetLocal(-1),weekEnd=offsetLocal(7);
+filtered=filtered.filter(function(e){
+if(!e.dateEvent)return false;
+var ed=dateToLocal(e.dateEvent);
+if(currentDateFilter==="today")return ed===today;
+if(currentDateFilter==="tomorrow")return ed===tomorrow;
+if(currentDateFilter==="yesterday")return ed===yesterday;
+if(currentDateFilter==="week")return ed>=today&&ed<weekEnd;
+return true;
+});
+}
+if(searchQuery.length>0){
+filtered=filtered.filter(function(e){
+var hAr=arName(e.strHomeTeam).toLowerCase(),aAr=arName(e.strAwayTeam).toLowerCase();
+var hEn=(e.strHomeTeam||"").toLowerCase(),aEn=(e.strAwayTeam||"").toLowerCase();
+return hAr.indexOf(searchQuery)>-1||aAr.indexOf(searchQuery)>-1||hEn.indexOf(searchQuery)>-1||aEn.indexOf(searchQuery)>-1;
+});
+}
+currentEvents=filtered;
+renderMatches(filtered);
+}
+
+function renderMatches(events,debugInfo){
+var today=offsetLocal(0),tomorrow=offsetLocal(1),yesterday=offsetLocal(-1);
+var live=0,done=0,soon=0;
+for(var i=0;i<allEvents.length;i++){
+var e=allEvents[i];
+var hasScore=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+var ed=dateToLocal(e.dateEvent);
+if(hasScore&&e.strStatus==="in")live++;
+else if(hasScore)done++;
+else if(ed>=today)soon++;
+}
+var todayCount=0,tomorrowCount=0,yesterdayCount=0;
+for(var i=0;i<allEvents.length;i++){
+var ed=dateToLocal(allEvents[i].dateEvent);
+if(ed===today)todayCount++;
+if(ed===tomorrow)tomorrowCount++;
+if(ed===yesterday)yesterdayCount++;
+}
+
+var summaryHTML='<div class="stats-summary">';
+summaryHTML+='<div class="sum-box total"><div class="num">'+allEvents.length+'</div><div class="lbl">إجمالي</div></div>';
+summaryHTML+='<div class="sum-box live"><div class="num">'+live+'</div><div class="lbl">مباشر</div></div>';
+summaryHTML+='<div class="sum-box done"><div class="num">'+done+'</div><div class="lbl">انتهت</div></div>';
+summaryHTML+='<div class="sum-box soon"><div class="num">'+soon+'</div><div class="lbl">قادمة</div></div>';
+summaryHTML+='</div>';
+
+var searchHTML='<div class="search-box" id="searchBox"><span class="icon">🔍</span>';
+searchHTML+='<input type="text" id="searchInput" placeholder="ابحث عن فريق..." value="'+searchQuery+'" oninput="onSearchInput(this.value)">';
+searchHTML+='<button class="clear-btn" onclick="clearSearch()">✕</button></div>';
+
+var filterHTML='<div class="date-filter">';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="all"?"active":"")+'" onclick="filterByDate(\'all\')">الكل ('+allEvents.length+')</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="yesterday"?"active":"")+(yesterdayCount>0?" has-items":"")+'" onclick="filterByDate(\'yesterday\')">📅 أمس'+(yesterdayCount>0?" ("+yesterdayCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="today"?"active":"")+(todayCount>0?" has-items":"")+'" onclick="filterByDate(\'today\')">📅 اليوم'+(todayCount>0?" ("+todayCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="tomorrow"?"active":"")+(tomorrowCount>0?" has-items":"")+'" onclick="filterByDate(\'tomorrow\')">📅 غدًا'+(tomorrowCount>0?" ("+tomorrowCount+")":"")+'</button>';
+filterHTML+='<button class="date-btn '+(currentDateFilter==="week"?"active":"")+'" onclick="filterByDate(\'week\')">📅 هذا الأسبوع</button>';
+filterHTML+='</div>';
+
+var debugHTML=(debugInfo&&currentDateFilter==="all"&&!searchQuery)?('<div class="debug-info">'+debugInfo+'</div>'):"";
+
+if(!events||events.length===0){
+document.getElementById("matchesList").innerHTML=summaryHTML+searchHTML+filterHTML+'<div class="no-data">لا توجد مباريات متاحة</div>';
+return;
+}
+
+function buildCard(e){
+var ed=dateToLocal(e.dateEvent);
+var time=(e.strTime||"").substring(0,5);
+var isToday=ed===today,isTomorrow=ed===tomorrow,isYesterday=ed===yesterday;
+var hasScore=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+var liveNow=hasScore&&e.strStatus==="in";
+var idx=currentEvents.indexOf(e);
+var hAr=arName(e.strHomeTeam),aAr=arName(e.strAwayTeam);
+var dayName="";
+try{dayName=new Date(e.dateEvent+"T12:00:00").toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"short"});}
+catch(err){dayName=e.dateEvent;}
+var badge="";
+if(liveNow)badge='<span class="badge live">● مباشر</span>';
+else if(isToday&&!hasScore)badge='<span class="badge today">اليوم</span>';
+else if(isTomorrow)badge='<span class="badge tomorrow">غدًا</span>';
+else if(isYesterday)badge='<span class="badge yesterday">أمس</span>';
+else if(hasScore)badge='<span class="badge done">انتهت</span>';
+var cardClass=liveNow?"live":(isToday?"today":(hasScore?"played":""));
+var scoreClass="";
+if(hasScore){
+var h=parseInt(e.intHomeScore),a=parseInt(e.intAwayScore);
+scoreClass=h>a?"win-home":(a>h?"win-away":"draw-game");
+}
+var html='<div class="match-card '+cardClass+'" onclick="openMatchByIndex('+idx+')">';
+html+='<div class="match-date"><div class="left-side">'+badge+'<span>'+dayName+'</span></div><span>'+time+'</span></div>';
+html+='<div class="match-teams">';
+html+='<div class="team-row">'+(e.strHomeTeamBadge?'<img class="team-badge" src="'+e.strHomeTeamBadge+'" onerror="this.style.display=\'none\'">':'')+'<div class="team-name">'+hAr+'</div></div>';
+html+=hasScore?'<div class="match-score '+scoreClass+'">'+e.intHomeScore+' - '+e.intAwayScore+'</div>':'<div class="match-vs">VS</div>';
+html+='<div class="team-row left">'+(e.strAwayTeamBadge?'<img class="team-badge" src="'+e.strAwayTeamBadge+'" onerror="this.style.display=\'none\'">':'')+'<div class="team-name">'+aAr+'</div></div>';
+html+='</div></div>';
+return html;
+}
+
+if(currentDateFilter!=="all"||searchQuery){
+var html=searchHTML+filterHTML;
+html+='<div class="matches-title"><span>المباريات</span><span class="count-badge">'+events.length+'</span></div>';
+var cards="";
+for(var i=0;i<events.length;i++)cards+=buildCard(events[i]);
+html+=cards;
+document.getElementById("matchesList").innerHTML=html;
+return;
+}
+
+var liveM=[],todayM=[],tomorrowM=[],upcomingM=[],yesterdayM=[],pastM=[];
+for(var i=0;i<events.length;i++){
+var e=events[i];
+var ed=dateToLocal(e.dateEvent);
+var has=e.intHomeScore!==null&&e.intHomeScore!==undefined;
+if(has&&e.strStatus==="in")liveM.push(e);
+else if(ed===today)todayM.push(e);
+else if(ed===tomorrow)tomorrowM.push(e);
+else if(ed===yesterday)yesterdayM.push(e);
+else if(ed>today)upcomingM.push(e);
+else pastM.push(e);
+}
+
+function section(title,cls,arr){
+if(arr.length===0)return "";
+var h='<div class="section-header"><span class="dot '+cls+'"></span><span>'+title+'</span>';
+h+='<span style="color:#60a5fa;margin-right:auto;font-size:11px">'+arr.length+'</span></div>';
+for(var i=0;i<arr.length;i++)h+=buildCard(arr[i]);
+return h;
+}
+
+var finalHTML=summaryHTML+searchHTML+filterHTML+debugHTML;
+finalHTML+=section("🔴 مباشر الآن","live",liveM);
+finalHTML+=section("📅 مباريات اليوم","today",todayM);
+finalHTML+=section("📅 مباريات غدًا","upcoming",tomorrowM);
+finalHTML+=section("📆 المباريات القادمة","upcoming",upcomingM);
+finalHTML+=section("📆 نتائج الأمس","past",yesterdayM);
+finalHTML+=section("📆 المباريات السابقة","past",pastM);
+document.getElementById("matchesList").innerHTML=finalHTML;
+}
+
+function hashStr(s){var h=0;s=String(s);for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+function poisson(k,l){if(l<=0)return k===0?1:0;var p=Math.exp(-l);for(var i=1;i<=k;i++)p*=l/i;return p;}
+
+function predict(event){
+var h1=hashStr(event.strHomeTeam);
+var h2=hashStr(event.strAwayTeam);
+var h3=hashStr(event.strHomeTeam+event.strAwayTeam);
+var homeStrength=(h1%50)+35;
+var awayStrength=(h2%50)+30;
+homeStrength+=10;
+homeStrength+=(h3%20)-10;
+var total=homeStrength+awayStrength;
+var homeWin=(homeStrength/total)*70;
+var awayWin=(awayStrength/total)*70;
+var draw=100-homeWin-awayWin;
+if(draw<15)draw=15;
+var rem=100-draw;
+var ratio=homeWin/(homeWin+awayWin);
+homeWin=rem*ratio;
+awayWin=rem*(1-ratio);
+homeWin=Math.round(homeWin);
+awayWin=Math.round(awayWin);
+draw=100-homeWin-awayWin;
+var confidence=55+(Math.abs(homeWin-awayWin)%30);
+var homeGoalsTotal=1+(h1%25)/10;
+var awayGoalsTotal=0.8+(h2%20)/10;
+var homeH1Factor=0.42+((h3%8)/100);
+var awayH1Factor=0.38+((h2%10)/100);
+var homeH1=+(homeGoalsTotal*homeH1Factor).toFixed(1);
+var homeH2=+(homeGoalsTotal*(1-homeH1Factor)).toFixed(1);
+var awayH1=+(awayGoalsTotal*awayH1Factor).toFixed(1);
+var awayH2=+(awayGoalsTotal*(1-awayH1Factor)).toFixed(1);
+var totalH1=+(homeH1+awayH1).toFixed(1);
+var totalH2=+(homeH2+awayH2).toFixed(1);
+var scoreList=[];
+for(var h=0;h<=5;h++)for(var a=0;a<=5;a++){
+scoreList.push({h:h,a:a,prob:poisson(h,homeGoalsTotal)*poisson(a,awayGoalsTotal)});
+}
+var totalProb=scoreList.reduce(function(s,x){return s+x.prob;},0);
+scoreList.forEach(function(x){x.prob=x.prob/totalProb;});
+scoreList.sort(function(x,y){return y.prob-x.prob;});
+var topScores=scoreList.slice(0,3).map(function(x){return {score:x.h+" - "+x.a,prob:+(x.prob*100).toFixed(1)};});
+var totalGoalsExpected=homeGoalsTotal+awayGoalsTotal;
+var earlyProb=45+(totalGoalsExpected-2.5)*8+(h3%10)-5;
+earlyProb=Math.max(30,Math.min(70,earlyProb));
+var lateProb=100-earlyProb;
+return {
+homeWin:homeWin,draw:draw,awayWin:awayWin,confidence:confidence,
+homeGoals:homeGoalsTotal.toFixed(1),awayGoals:awayGoalsTotal.toFixed(1),
+cards:3+(h3%4),corners:8+(h3%6),
+homeH1:homeH1,homeH2:homeH2,awayH1:awayH1,awayH2:awayH2,
+totalH1:totalH1,totalH2:totalH2,topScores:topScores,
+earlyProb:Math.round(earlyProb),lateProb:Math.round(lateProb)
+};
+}
+
+function openMatchByIndex(idx){
+var event=currentEvents[idx];
+if(!event)return;
+var hAr=arName(event.strHomeTeam),aAr=arName(event.strAwayTeam);
+var lAr=currentLeague?currentLeague.ar:"";
+var hB=event.strHomeTeamBadge||"",aB=event.strAwayTeamBadge||"";
+var hasScore=event.intHomeScore!==null&&event.intHomeScore!==undefined;
+var actual=hasScore?(event.intHomeScore+" - "+event.intAwayScore):"";
+var p=predict(event);
+var winner="تعادل";
+if(p.homeWin>p.awayWin&&p.homeWin>p.draw)winner=hAr;
+else if(p.awayWin>p.draw)winner=aAr;
+var html='<div class="pred-header">';
+html+='<div class="pred-league">'+lAr+'</div>';
+html+='<div class="pred-teams">';
+html+='<div class="pred-team">'+(hB?'<img src="'+hB+'" onerror="this.style.display=\'none\'">':'')+'<div class="name">'+hAr+'</div></div>';
+html+='<div class="pred-vs">VS</div>';
+html+='<div class="pred-team">'+(aB?'<img src="'+aB+'" onerror="this.style.display=\'none\'">':'')+'<div class="name">'+aAr+'</div></div>';
+html+='</div>';
+html+='<div class="pred-date">'+(event.dateEvent||"")+" • "+(event.strTime||"").substring(0,5)+'</div>';
+if(hasScore)html+='<div class="pred-result-box">'+actual+'</div>';
+html+='</div>';
+html+='<div class="pred-title"><div class="label">التوقع الأقرب</div><div class="value">'+winner+'</div></div>';
+html+='<div class="bars-box">';
+html+='<div class="bar-item"><div class="bar-header"><span class="label blue"><span>فوز '+hAr+'</span></span><span class="value">'+p.homeWin+'%</span></div><div class="bar-track"><div class="bar-fill blue" style="width:'+p.homeWin+'%"></div></div></div>';
+html+='<div class="bar-item"><div class="bar-header"><span class="label yellow"><span>تعادل</span></span><span class="value">'+p.draw+'%</span></div><div class="bar-track"><div class="bar-fill yellow" style="width:'+p.draw+'%"></div></div></div>';
+html+='<div class="bar-item"><div class="bar-header"><span class="label purple"><span>فوز '+aAr+'</span></span><span class="value">'+p.awayWin+'%</span></div><div class="bar-track"><div class="bar-fill purple" style="width:'+p.awayWin+'%"></div></div></div>';
+html+='</div>';
+html+='<div class="confidence-box"><span class="label">مستوى الثقة</span><span class="value">'+p.confidence+'%</span></div>';
+html+='<div class="score-box"><h4>🎯 النتائج الأكثر احتمالاً</h4><div class="score-options">';
+for(var i=0;i<p.topScores.length;i++){
+var s=p.topScores[i];
+html+='<div class="score-opt '+(i===0?"top1":"")+'">'+(i===0?'<div class="score-rank">1</div>':'')+'<div class="score-val">'+s.score+'</div><div class="score-pct">'+s.prob+'%</div></div>';
+}
+html+='</div></div>';
+html+='<div class="firstgoal-box"><h4>⏱️ توقيت أول هدف</h4><div class="firstgoal-grid">';
+html+='<div class="fg-opt early"><div class="fg-time">قبل الدقيقة 30</div><div class="fg-pct">'+p.earlyProb+'%</div></div>';
+html+='<div class="fg-opt late"><div class="fg-time">بعد الدقيقة 30</div><div class="fg-pct">'+p.lateProb+'%</div></div>';
+html+='</div></div>';
+html+='<div class="stats-grid">';
+html+='<div class="stat-box"><div class="label">أهداف المضيف</div><div class="value">'+p.homeGoals+'</div></div>';
+html+='<div class="stat-box"><div class="label">أهداف الضيف</div><div class="value">'+p.awayGoals+'</div></div>';
+html+='<div class="stat-box"><div class="label">ركنيات متوقعة</div><div class="value">'+p.corners+'</div></div>';
+html+='<div class="stat-box"><div class="label">بطاقات متوقعة</div><div class="value">'+p.cards+'</div></div>';
+html+='</div>';
+html+='<div class="halves-box"><h4>⚽ توزيع الأهداف على الشوطين</h4>';
+html+='<div class="half-row"><div class="half-title first"><div class="icon">1H</div><span>الشوط الأول</span></div>';
+html+='<div class="half-teams">';
+html+='<div class="half-team-stat home"><div class="team">'+hAr.substring(0,14)+'</div><div class="goals">'+p.homeH1+'</div></div>';
+html+='<div class="half-team-stat away"><div class="team">'+aAr.substring(0,14)+'</div><div class="goals">'+p.awayH1+'</div></div>';
+html+='</div>';
+html+='<div class="half-total"><div class="lbl">إجمالي الشوط الأول</div><div class="val">'+p.totalH1+'</div></div></div>';
+html+='<div class="half-row"><div class="half-title second"><div class="icon">2H</div><span>الشوط الثاني</span></div>';
+html+='<div class="half-teams">';
+html+='<div class="half-team-stat home"><div class="team">'+hAr.substring(0,14)+'</div><div class="goals">'+p.homeH2+'</div></div>';
+html+='<div class="half-team-stat away"><div class="team">'+aAr.substring(0,14)+'</div><div class="goals">'+p.awayH2+'</div></div>';
+html+='</div>';
+html+='<div class="half-total"><div class="lbl">إجمالي الشوط الثاني</div><div class="val">'+p.totalH2+'</div></div></div>';
+html+='</div>';
+html+='<div class="factors-box"><h4>العوامل الرئيسية</h4>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> الحالة الأخيرة للفريقين</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> متوسط الأهداف المسجلة والمستقبلة</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> عامل الأرض والجمهور</div>';
+html+='<div class="factor-item"><span class="factor-dot">●</span> الفارق الفني والتاريخي</div>';
+html+='</div>';
+document.getElementById("predictContent").innerHTML=html;
+showView("view-predict");
+}
+
+try{
+renderCategories();
+renderLeagues("all");
+}catch(err){
+console.error("Init error:",err);
+document.getElementById("leaguesList").innerHTML='<div class="error-box">خطأ: '+err.message+'</div>';
+}
+</script>
+</body>
+</html>
